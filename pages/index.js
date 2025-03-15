@@ -1,11 +1,26 @@
 import { useState } from "react";
+import { Line } from "react-chartjs-2";
+import "chart.js/auto";
 
 export default function Home() {
   const [entries, setEntries] = useState([]);
 
   const addEntry = () => {
-    const currentTime = new Date().toLocaleTimeString();
+    const currentTime = new Date();
     setEntries([...entries, currentTime]);
+  };
+
+  const chartData = {
+    labels: entries.map(entry => entry.toLocaleTimeString()),
+    datasets: [
+      {
+        label: "Toilettengänge",
+        data: entries.map((_, index) => index + 1),
+        fill: false,
+        borderColor: "blue",
+        tension: 0.1,
+      },
+    ],
   };
 
   return (
@@ -16,9 +31,14 @@ export default function Home() {
       <h2>Protokoll:</h2>
       <ul>
         {entries.map((entry, index) => (
-          <li key={index}>{entry}</li>
+          <li key={index}>{entry.toLocaleTimeString()}</li>
         ))}
       </ul>
+      <h2>Gesamtanzahl: {entries.length}</h2>
+      <h2>Verlauf:</h2>
+      <div style={{ width: "80%", margin: "auto" }}>
+        <Line data={chartData} />
+      </div>
     </div>
   );
 }
