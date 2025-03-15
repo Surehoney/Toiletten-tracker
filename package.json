@@ -1,0 +1,16 @@
+{
+  "name": "toiletten-tracker",
+  "version": "1.0.0",
+  "description": "Eine einfache App zum Protokollieren von Toilettenbesuchen",
+  "main": "index.js",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start"
+  },
+  "dependencies": {
+    "next": "latest",
+    "react": "latest",
+    "react-dom": "latest"
+  }
+}
