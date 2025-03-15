@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Line } from "react-chartjs-2";
 import "chart.js/auto";
+import Link from "next/link";
 
 export default function Home() {
   const [entries, setEntries] = useState([]);
@@ -9,6 +10,15 @@ export default function Home() {
     const currentTime = new Date();
     setEntries([...entries, currentTime]);
   };
+
+  useEffect(() => {
+    const today = new Date().toLocaleDateString();
+    let storedData = JSON.parse(localStorage.getItem("monthlyEntries")) || [];
+    if (!storedData.find(e => e.date === today)) {
+      storedData.push({ date: today, count: entries.length });
+      localStorage.setItem("monthlyEntries", JSON.stringify(storedData));
+    }
+  }, [entries]);
 
   const chartData = {
     labels: entries.map(entry => entry.toLocaleTimeString()),
@@ -39,6 +49,9 @@ export default function Home() {
       <div style={{ width: "80%", margin: "auto" }}>
         <Line data={chartData} />
       </div>
+      <Link href="/monatsuebersicht">
+        <a style={{ display: "block", marginTop: "20px", fontSize: "16px" }}>Monatsübersicht anzeigen</a>
+      </Link>
     </div>
   );
 }
